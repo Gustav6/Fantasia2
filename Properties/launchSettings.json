@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Fantasia2": {
+      "commandName": "Project"
+    },
+    "Start With Godot": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\gustav.ekstrom1\\Desktop\\Godot_v4.1.1-stable_mono_win64\\Godot_v4.1.1-stable_mono_win64\\Godot_v4.1.1-stable_mono_win64.exe",
+      "commandLineArgs": "--path.--verbose",
+      "workingDirectory": ". ",
+      "nativeDebugging": true
+    }
+  }
+}
