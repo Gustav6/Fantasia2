@@ -1,9 +1,11 @@
 using Godot;
 using System;
 
-public partial class Health : CharacterBody2D
+public partial class AttackComponent : Node2D
 {
-	// Called when the node enters the scene tree for the first time.
+	[Export]
+	public float attackDamage { get; set; }
+
 	public override void _Ready()
 	{
 	}

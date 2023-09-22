@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c234nl2bt7p4d"]
+[gd_scene load_steps=8 format=3 uid="uid://c234nl2bt7p4d"]
 
 [ext_resource type="PackedScene" uid="uid://dqhhhu3yv0d8g" path="res://Prefabs/Character.tscn" id="2_wlpek"]
 [ext_resource type="Texture2D" uid="uid://dd4qbmh13gcbj" path="res://Asset Packs 1-3 (final)/Asset Pack-V1/Tilemap/Basic Tilemap.png" id="3_hgfij"]
+[ext_resource type="PackedScene" uid="uid://8a20mgjx82gr" path="res://Components/hitbox_component.tscn" id="3_plsdr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7usp8"]
 texture = ExtResource("3_hgfij")
@@ -190,10 +191,15 @@ texture = ExtResource("3_hgfij")
 physics_layer_0/collision_layer = 1
 sources/2 = SubResource("TileSetAtlasSource_7usp8")
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_bjdpv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ejk4a"]
+radius = 0.54074
+
 [node name="Main" type="Node2D"]
 
 [node name="Character" parent="." instance=ExtResource("2_wlpek")]
-position = Vector2(495, 433)
+position = Vector2(544, 400)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_iiqbu")
@@ -203,3 +209,28 @@ layer_0/tile_data = PackedInt32Array(2555924, 2, 9, 2555925, 65538, 9, 2555926, 
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(653, 595)
+scale = Vector2(22.5, 19.5)
+texture = SubResource("CanvasTexture_bjdpv")
+
+[node name="HitboxComponent" parent="Sprite2D" instance=ExtResource("3_plsdr")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/HitboxComponent"]
+shape = SubResource("CircleShape2D_ejk4a")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(540, 507)
+scale = Vector2(22.5, 19.5)
+texture = SubResource("CanvasTexture_bjdpv")
+
+[node name="HitboxComponent" parent="Sprite2D2" instance=ExtResource("3_plsdr")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D2/HitboxComponent"]
+shape = SubResource("CircleShape2D_ejk4a")
+
+[node name="HitboxComponent2" parent="Sprite2D2" instance=ExtResource("3_plsdr")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D2/HitboxComponent2"]
+shape = SubResource("CircleShape2D_ejk4a")

@@ -3,35 +3,44 @@ using System;
 
 public partial class Controller : CharacterBody2D
 {
-    public const float Speed = 300.0f;
-    public const float JumpVelocity = -400.0f;
+    [Export(PropertyHint.Range, "0, 500, 2")]
+    public float Speed { get; set; }
+    public const float JumpVelocity = 400.0f;
+
+    private bool isAttacking;
+    private float direction;
+
     private AnimationPlayer animationPlayer;
     private Sprite2D sprite;
-    private bool isAttacking;
 
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     public override void _Ready()
-	{
+    {
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         sprite = GetNode<Sprite2D>("Sprite2D");
 	}
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("attack") && !isAttacking && IsOnFloor())
-        {
-            isAttacking = true;
-            animationPlayer.Play("Attack");
-        }
-        OnAnimationPlayerAnimationFinished("Attack");
-    }
-
-    public void OnAnimationPlayerAnimationFinished(StringName anim)
-    {
-        if (anim.IsEmpty)
+        direction = Input.GetAxis("move_left", "move_right");
+        if (isAttacking && animationPlayer.CurrentAnimationPosition == animationPlayer.CurrentAnimationLength)
         {
             isAttacking = false;
+        }
+
+        if (!isAttacking)
+        {
+            if (Velocity.X != 0)
+                animationPlayer.Play("Run");
+            else if (Velocity.X == 0)
+                animationPlayer.Play("Idle");
+
+            if (Input.IsActionJustPressed("attack") && IsOnFloor())
+            {
+                isAttacking = true;
+                animationPlayer.Play("Attack");
+            }
         }
     }
 
@@ -46,20 +55,17 @@ public partial class Controller : CharacterBody2D
 
         if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
         {
-            velocity.Y = JumpVelocity;
+            velocity.Y -= JumpVelocity;
         }
 
-        Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-        if (!isAttacking && direction != Vector2.Zero)
+        if (direction != 0)
         {
-            velocity.X = direction.X * Speed;
-            sprite.Scale = new Vector2(direction.X, 1);
-            animationPlayer.Play("Run");
+            velocity.X = direction * Speed;
+            sprite.Scale = new Vector2(direction, 1);
         }
-        else if (!isAttacking && direction == Vector2.Zero)
+        else if (direction == 0)
         {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-            animationPlayer.Play("Idle");
         }
 
         Velocity = velocity;
